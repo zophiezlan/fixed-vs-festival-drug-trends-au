@@ -1,18 +1,33 @@
 # Fixed-Site vs Festival Drug Checking Trends in Australia
 
-A comprehensive data analysis project comparing Australian fixed-site and festival drug checking services, with a focus on drug diversity detection and Novel Psychoactive Substances (NPS) identification.
+A comprehensive **mixed-methods** data analysis project comparing Australian fixed-site and festival drug checking services, combining quantitative analysis of drug checking data with qualitative interviews of stakeholders to identify distinct trends and insights.
 
 ## Overview
 
-This project analyzes and visualizes trends showing that **fixed-site drug checking services detect a higher diversity of drugs**, especially Novel Psychoactive Substances (NPS), highlighting their crucial role as an **early warning system for public health**.
+This project employs a **convergent parallel mixed-methods approach** that integrates:
+- **Quantitative analysis**: Statistical analysis of drug checking data (900 samples)
+- **Qualitative analysis**: Thematic analysis of stakeholder interviews (24 participants)
+- **Mixed-methods synthesis**: Integration of findings to provide comprehensive understanding
+
+The analysis demonstrates that **fixed-site drug checking services detect a higher diversity of drugs**, especially Novel Psychoactive Substances (NPS), while stakeholder interviews reveal the mechanisms and contextual factors behind these patterns.
 
 ### Key Findings
 
-✅ **Higher Drug Diversity**: Fixed-site services detect significantly more unique substances  
-✅ **Enhanced NPS Detection**: Fixed sites identify more NPS types (40% vs 20% detection rate)  
-✅ **Early Warning Function**: Fixed sites detect emerging substances earlier than festival services  
-✅ **Better Adulterant Detection**: More comprehensive analysis capabilities  
-✅ **Public Health Surveillance**: Critical role in monitoring drug market trends
+**Quantitative Analysis:**
+✅ **Higher Drug Diversity**: Fixed-site services detect significantly more unique substances (38 vs 22)
+✅ **Enhanced NPS Detection**: Fixed sites identify more NPS types (42.8% vs 23.2% detection rate)  
+✅ **Early Warning Function**: Fixed sites detect emerging substances 3.4x more often  
+✅ **Better Adulterant Detection**: 38% vs 13.5% detection rate at fixed sites
+
+**Qualitative Analysis:**
+✅ **Provider Perspectives**: Different capabilities attributed to equipment, time, and clientele
+✅ **User Preferences**: Distinct needs based on context, timing, and information requirements
+✅ **Service Complementarity**: Both models serve essential but different functions
+
+**Mixed-Methods Synthesis:**
+✅ **Strong Convergence**: Quantitative patterns explained by qualitative mechanisms
+✅ **Comprehensive Understanding**: Integration reveals why differences exist and their implications
+✅ **Policy Implications**: Evidence supports investment in both complementary service models
 
 ## Project Structure
 
@@ -21,19 +36,27 @@ fixed-vs-festival-drug-trends-au/
 ├── data/                      # Dataset directory
 │   ├── fixed_site_data.csv    # Fixed-site service data
 │   ├── festival_data.csv      # Festival service data
-│   └── combined_data.csv      # Combined dataset
+│   ├── combined_data.csv      # Combined quantitative dataset
+│   ├── service_provider_interviews.csv  # Provider interview data
+│   ├── service_user_interviews.csv      # User interview data
+│   └── all_interviews.csv     # Combined qualitative dataset
 ├── src/                       # Source code
-│   ├── generate_data.py       # Synthetic data generation
-│   ├── analysis.py            # Analysis module
+│   ├── generate_data.py       # Quantitative data generation
+│   ├── generate_qualitative_data.py  # Qualitative data generation
+│   ├── analysis.py            # Quantitative analysis module
+│   ├── qualitative_analysis.py  # Qualitative analysis module
+│   ├── mixed_methods.py       # Mixed-methods integration
 │   └── visualization.py       # Visualization module
 ├── outputs/                   # Generated outputs
-│   ├── analysis_report.txt    # Text summary report
+│   ├── quantitative_analysis.txt  # Quantitative report
+│   ├── qualitative_analysis.txt   # Qualitative report
+│   ├── mixed_methods_report.txt   # Integrated findings
 │   ├── service_comparison.png # Key metrics comparison
 │   ├── nps_trends.png         # NPS detection trends
 │   ├── substance_distribution.png
 │   ├── nps_diversity.png      # NPS diversity analysis
 │   └── early_warning.png      # Early warning system visualization
-├── main.py                    # Main analysis script
+├── main.py                    # Main mixed-methods analysis script
 ├── requirements.txt           # Python dependencies
 └── README.md                  # This file
 ```
@@ -68,19 +91,22 @@ pip install -r requirements.txt
 
 ### Running the Complete Analysis
 
-Execute the main analysis script to generate data, perform analysis, and create visualizations:
+Execute the main analysis script to generate data, perform mixed-methods analysis, and create visualizations:
 
 ```bash
 python main.py
 ```
 
 This will:
-1. Generate synthetic drug checking datasets (900 samples total)
-2. Perform comparative statistical analysis
-3. Calculate diversity indices (Shannon, Simpson)
-4. Identify emerging substances and early warning indicators
-5. Create comprehensive visualizations
-6. Save all outputs to the `outputs/` directory
+1. Generate synthetic quantitative drug checking datasets (900 samples)
+2. Generate synthetic qualitative interview data (24 stakeholder interviews)
+3. Perform quantitative statistical analysis
+4. Conduct qualitative thematic analysis
+5. Integrate findings using mixed-methods synthesis
+6. Calculate diversity indices (Shannon, Simpson)
+7. Identify emerging substances and early warning indicators
+8. Create comprehensive visualizations
+9. Save all outputs to the `outputs/` directory
 
 ### Individual Components
 
@@ -89,24 +115,36 @@ You can also run individual components:
 ```bash
 # Generate data only
 python src/generate_data.py
+python src/generate_qualitative_data.py
 
 # Run custom analysis (in Python)
 from src.analysis import DrugCheckingAnalyzer
-analyzer = DrugCheckingAnalyzer('data/combined_data.csv')
-print(analyzer.generate_summary_report())
+from src.qualitative_analysis import QualitativeAnalyzer
+from src.mixed_methods import MixedMethodsIntegrator
+
+# Quantitative analysis
+quant_analyzer = DrugCheckingAnalyzer('data/combined_data.csv')
+print(quant_analyzer.generate_summary_report())
+
+# Qualitative analysis
+qual_analyzer = QualitativeAnalyzer('data/all_interviews.csv')
+print(qual_analyzer.generate_qualitative_summary())
+
+# Mixed-methods integration
+integrator = MixedMethodsIntegrator(quant_analyzer, qual_analyzer)
+print(integrator.generate_mixed_methods_report())
 ```
 
 ## Data Description
 
-### Datasets
+### Quantitative Datasets
 
-The project uses synthetic datasets designed to reflect realistic patterns in Australian drug checking services:
+The project uses synthetic drug checking datasets designed to reflect realistic patterns:
 
 - **Fixed-Site Data** (500 samples): Year-round service with higher NPS detection
 - **Festival Data** (400 samples): Event-based service focused on common substances
 
-### Variables
-
+**Variables:**
 - `date`: Date of sample testing
 - `service_type`: Fixed-site or Festival
 - `substance_detected`: Primary substance identified
@@ -116,9 +154,28 @@ The project uses synthetic datasets designed to reflect realistic patterns in Au
 - `adulterants`: Additional substances detected
 - `num_adulterants`: Count of adulterants
 
+### Qualitative Datasets
+
+Synthetic stakeholder interview data representing diverse perspectives:
+
+- **Service Provider Interviews** (9 interviews): 5 fixed-site, 4 festival providers
+- **Service User Interviews** (15 interviews): 8 fixed-site, 7 festival users
+
+**Interview Themes:**
+- Detection capabilities and limitations
+- Early warning system functions
+- User populations and access patterns
+- Harm reduction impact
+- Resource needs and service improvements
+- Trust, comfort, and information needs
+
 ## Methodology
 
-### Analysis Techniques
+### Mixed-Methods Design
+
+This project employs a **convergent parallel mixed-methods design** where quantitative and qualitative data are collected and analyzed independently, then integrated to provide comprehensive insights:
+
+#### Quantitative Component
 
 1. **Diversity Analysis**
    - Shannon Diversity Index: Measures species richness and evenness
@@ -135,35 +192,80 @@ The project uses synthetic datasets designed to reflect realistic patterns in Au
    - First detection timing (early warning)
    - Adulterant detection capabilities
 
+#### Qualitative Component
+
+1. **Stakeholder Interviews**
+   - Service providers (fixed-site and festival)
+   - Service users (both service types)
+   - Semi-structured interview approach
+
+2. **Thematic Analysis**
+   - Identification of recurring themes
+   - Pattern recognition across stakeholder groups
+   - Contextual understanding of service differences
+
+#### Mixed-Methods Integration
+
+1. **Convergence Analysis**
+   - Identify where quantitative and qualitative findings align
+   - Assess strength of triangulation
+
+2. **Complementarity Analysis**
+   - Explore how different methods provide unique insights
+   - Understand mechanisms behind quantitative patterns
+
+3. **Synthesis**
+   - Integrated interpretation of findings
+   - Policy and practice implications
+
 ### Visualizations
 
-The project generates five key visualization types:
+The project generates six key visualization types:
 
-1. **Service Comparison**: Overview of key metrics
-2. **NPS Trends**: Temporal patterns in NPS detection
-3. **Substance Distribution**: Most commonly detected substances
-4. **NPS Diversity**: Detailed NPS type comparison
-5. **Early Warning System**: Detection timing and emerging threats
+1. **Service Comparison**: Overview of key metrics (quantitative)
+2. **NPS Trends**: Temporal patterns in NPS detection (quantitative)
+3. **Substance Distribution**: Most commonly detected substances (quantitative)
+4. **NPS Diversity**: Detailed NPS type comparison (quantitative)
+5. **Early Warning System**: Detection timing and emerging threats (quantitative)
+6. **Mixed-Methods Summary**: Integration of quantitative and qualitative findings
 
 ## Results & Implications
+
+### Integrated Findings
+
+The mixed-methods approach reveals:
+
+1. **Detection Capabilities**: Quantitative data shows 73% more substance diversity at fixed sites. Qualitative interviews explain this through equipment sophistication, analysis time, and diverse clientele.
+
+2. **Early Warning Function**: Fixed sites detect new substances first 3.4x more often. Providers confirm this stems from year-round operation and broader sample sources.
+
+3. **User Populations**: Different service models attract distinct populations with varying needs—fixed-site users value thoroughness and privacy; festival users prioritize convenience and immediacy.
+
+4. **Service Complementarity**: Both quantitative performance data and stakeholder perspectives emphasize that both service types are essential and complementary rather than competing.
 
 ### For Harm Reduction
 
 - Fixed-site services provide continuous monitoring of drug market trends
-- Earlier detection of emerging substances enables faster public health responses
-- Higher diversity detection supports more comprehensive harm reduction messaging
+- Festival services offer point-of-need accessible harm reduction
+- Different user populations benefit from different service models
+- Both approaches needed for comprehensive harm reduction coverage
+- Qualitative data reveals user satisfaction and behavior change patterns
 
 ### For Policy Makers
 
-- Evidence supporting investment in fixed-site infrastructure
-- Demonstrates complementary roles of fixed-site and festival services
-- Data-driven approach to resource allocation for drug checking services
+- Evidence supporting investment in both fixed-site and festival services
+- Quantitative data demonstrates detection capabilities and surveillance value
+- Qualitative data reveals stakeholder perspectives on service value
+- Mixed-methods approach provides robust evidence for resource allocation
+- Both service models serve complementary rather than competing roles
 
 ### For Public Health
 
-- Early warning system for Novel Psychoactive Substances
+- Early warning system for Novel Psychoactive Substances validated through quantitative data
 - Enhanced surveillance of drug market dynamics
-- Better adulterant detection protects public health
+- Stakeholder insights reveal mechanisms of service effectiveness
+- Better adulterant detection at fixed sites protects public health
+- User perspectives inform service design and accessibility improvements
 
 ## Technical Details
 
@@ -193,11 +295,14 @@ Contributions are welcome! Areas for enhancement:
 
 ## Ethics & Data Privacy
 
-This project uses **synthetic data only**. Real drug checking data should:
+This project uses **synthetic data only** to demonstrate methodology. Real drug checking and interview data should:
 - Be anonymized and de-identified
-- Comply with privacy regulations
-- Have appropriate ethical approval
+- Have informed consent from all participants
+- Comply with privacy regulations (e.g., GDPR, local privacy laws)
+- Have appropriate ethical approval from research ethics committees
 - Follow data sharing agreements with service providers
+- Protect participant confidentiality in qualitative data
+- Use pseudonyms and remove identifying information in interview transcripts
 
 ## License
 

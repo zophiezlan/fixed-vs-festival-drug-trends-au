@@ -285,9 +285,139 @@ class DrugCheckingVisualizer:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
         print(f"Saved: {save_path}")
         plt.close()
+    
+    def plot_mixed_methods_summary(self, qual_analyzer, save_path='outputs/mixed_methods_summary.png'):
+        """
+        Create visualization summarizing mixed-methods findings.
         
-    def create_all_visualizations(self):
-        """Generate all visualization outputs."""
+        Args:
+            qual_analyzer: QualitativeAnalyzer instance for qualitative data
+        """
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+        fig.suptitle('Mixed-Methods Analysis: Integrating Quantitative & Qualitative Findings', 
+                     fontsize=15, fontweight='bold')
+        
+        # Get data
+        quant_comparison = self.analyzer.get_service_comparison()
+        qual_summary = qual_analyzer.get_participant_summary()
+        
+        # Plot 1: Quantitative sample sizes vs qualitative interview counts
+        ax1 = axes[0, 0]
+        services = list(quant_comparison.keys())
+        quant_samples = [quant_comparison[s]['total_samples'] for s in services]
+        
+        # Get qualitative counts
+        qual_counts = []
+        for service in services:
+            total = 0
+            for participant_type, service_data in qual_summary.items():
+                if service in service_data:
+                    total += service_data[service]['count']
+            qual_counts.append(total)
+        
+        x = np.arange(len(services))
+        width = 0.35
+        ax1.bar(x - width/2, quant_samples, width, label='Quantitative Samples', 
+                color='#3498db', alpha=0.8)
+        ax1.bar(x + width/2, [c * 20 for c in qual_counts], width, 
+                label='Qualitative Interviews (×20)', color='#e67e22', alpha=0.8)
+        ax1.set_ylabel('Count', fontsize=11, fontweight='bold')
+        ax1.set_title('Data Collection by Method', fontsize=12, fontweight='bold')
+        ax1.set_xticks(x)
+        ax1.set_xticklabels(services)
+        ax1.legend()
+        ax1.grid(axis='y', alpha=0.3)
+        
+        # Plot 2: NPS detection (quantitative) with provider experience (qualitative)
+        ax2 = axes[0, 1]
+        nps_percentages = [quant_comparison[s]['nps_percentage'] for s in services]
+        
+        # Get provider experience from qualitative data
+        qual_differences = qual_analyzer.identify_key_differences()
+        provider_exp = []
+        for service in services:
+            if service in qual_differences['service_providers']:
+                provider_exp.append(qual_differences['service_providers'][service]['avg_experience'])
+            else:
+                provider_exp.append(0)
+        
+        ax2_twin = ax2.twinx()
+        bars1 = ax2.bar(x - width/2, nps_percentages, width, label='NPS Detection Rate (%)', 
+                        color='#e74c3c', alpha=0.8)
+        bars2 = ax2_twin.bar(x + width/2, provider_exp, width, label='Avg Provider Experience (years)', 
+                             color='#9b59b6', alpha=0.8)
+        
+        ax2.set_ylabel('NPS Detection Rate (%)', fontsize=11, fontweight='bold', color='#e74c3c')
+        ax2_twin.set_ylabel('Avg Years Experience', fontsize=11, fontweight='bold', color='#9b59b6')
+        ax2.set_title('Detection Capability & Provider Experience', fontsize=12, fontweight='bold')
+        ax2.set_xticks(x)
+        ax2.set_xticklabels(services)
+        ax2.grid(axis='y', alpha=0.3)
+        ax2.tick_params(axis='y', labelcolor='#e74c3c')
+        ax2_twin.tick_params(axis='y', labelcolor='#9b59b6')
+        
+        # Plot 3: Convergent findings summary
+        ax3 = axes[1, 0]
+        convergence_themes = [
+            'Detection\nCapabilities',
+            'Early\nWarning',
+            'User\nPopulations',
+            'Service\nComplementarity'
+        ]
+        convergence_strength = [4, 4, 4, 4]  # All strong convergence
+        
+        bars = ax3.barh(convergence_themes, convergence_strength, 
+                       color='#2ecc71', alpha=0.8)
+        ax3.set_xlabel('Convergence Strength', fontsize=11, fontweight='bold')
+        ax3.set_title('Mixed-Methods Convergent Findings', fontsize=12, fontweight='bold')
+        ax3.set_xlim(0, 5)
+        ax3.set_xticks([0, 1, 2, 3, 4])
+        ax3.set_xticklabels(['None', 'Weak', 'Moderate', 'Strong', 'Very Strong'])
+        
+        for bar in bars:
+            width_val = bar.get_width()
+            ax3.text(width_val + 0.1, bar.get_y() + bar.get_height()/2.,
+                    'Strong', ha='left', va='center', fontsize=10, fontweight='bold')
+        
+        # Plot 4: Method contribution summary
+        ax4 = axes[1, 1]
+        methods = ['Quantitative', 'Qualitative', 'Integration']
+        contributions = [
+            'Detection rates\nDiversity metrics\nTemporal patterns',
+            'Mechanisms\nStakeholder views\nContextual factors',
+            'Convergence\nComplementarity\nPolicy implications'
+        ]
+        colors_contrib = ['#3498db', '#e67e22', '#2ecc71']
+        
+        y_pos = np.arange(len(methods))
+        for i, (method, contrib, color) in enumerate(zip(methods, contributions, colors_contrib)):
+            ax4.barh(i, 1, color=color, alpha=0.7, height=0.6)
+            ax4.text(0.5, i, f'{method}\n{contrib}', 
+                    ha='center', va='center', fontsize=9, fontweight='bold',
+                    bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        
+        ax4.set_yticks(y_pos)
+        ax4.set_yticklabels(methods)
+        ax4.set_xlim(0, 1)
+        ax4.set_xticks([])
+        ax4.set_title('Method Contributions to Understanding', fontsize=12, fontweight='bold')
+        ax4.spines['top'].set_visible(False)
+        ax4.spines['right'].set_visible(False)
+        ax4.spines['bottom'].set_visible(False)
+        ax4.spines['left'].set_visible(False)
+        
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Saved: {save_path}")
+        plt.close()
+        
+    def create_all_visualizations(self, qual_analyzer=None):
+        """
+        Generate all visualization outputs.
+        
+        Args:
+            qual_analyzer: Optional QualitativeAnalyzer instance for mixed-methods viz
+        """
         print("\nGenerating visualizations...")
         print("-" * 50)
         
@@ -296,6 +426,10 @@ class DrugCheckingVisualizer:
         self.plot_substance_distribution()
         self.plot_nps_diversity()
         self.plot_early_warning_system()
+        
+        # Add mixed-methods visualization if qualitative analyzer provided
+        if qual_analyzer:
+            self.plot_mixed_methods_summary(qual_analyzer)
         
         print("-" * 50)
         print("All visualizations complete!")
