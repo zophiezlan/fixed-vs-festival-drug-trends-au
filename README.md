@@ -220,13 +220,14 @@ This project employs a **convergent parallel mixed-methods design** where quanti
 
 ### Visualizations
 
-The project generates five key visualization types:
+The project generates six key visualization types:
 
-1. **Service Comparison**: Overview of key metrics
-2. **NPS Trends**: Temporal patterns in NPS detection
-3. **Substance Distribution**: Most commonly detected substances
-4. **NPS Diversity**: Detailed NPS type comparison
-5. **Early Warning System**: Detection timing and emerging threats
+1. **Service Comparison**: Overview of key metrics (quantitative)
+2. **NPS Trends**: Temporal patterns in NPS detection (quantitative)
+3. **Substance Distribution**: Most commonly detected substances (quantitative)
+4. **NPS Diversity**: Detailed NPS type comparison (quantitative)
+5. **Early Warning System**: Detection timing and emerging threats (quantitative)
+6. **Mixed-Methods Summary**: Integration of quantitative and qualitative findings
 
 ## Results & Implications
 

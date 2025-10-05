@@ -42,12 +42,13 @@ A complete **mixed-methods data analysis project** demonstrating how **fixed-sit
   - Integrated interpretation
 
 ### 6. Visualization Suite (`src/visualization.py`)
-- **DrugCheckingVisualizer** creates 5 publication-ready charts:
+- **DrugCheckingVisualizer** creates 6 publication-ready charts:
   1. Service Comparison (4-panel overview)
   2. NPS Trends (temporal analysis)
   3. Substance Distribution (top substances)
   4. NPS Diversity (detailed NPS comparison)
   5. Early Warning System (detection timing)
+  6. Mixed-Methods Summary (integration of quantitative & qualitative)
 
 ### 7. Main Pipeline (`main.py`)
 - Single-command execution of mixed-methods analysis
@@ -173,6 +174,7 @@ python src/generate_qualitative_data.py
 - `substance_distribution.png` - Top substances by service
 - `nps_diversity.png` - NPS type comparison
 - `early_warning.png` - Detection timing analysis
+- `mixed_methods_summary.png` - Integrated quantitative & qualitative visualization
 
 ## Impact & Applications
 
@@ -230,7 +232,7 @@ Potential additions:
 - **Lines of Code**: ~1,500+
 - **Functions/Methods**: 40+
 - **Data Points**: 900 quantitative samples + 24 qualitative interviews
-- **Visualizations**: 5 publication-ready charts
+- **Visualizations**: 6 publication-ready charts
 - **Documentation Pages**: 6 comprehensive guides
 - **Test Coverage**: 6 test suites
 - **Execution Time**: <2 minutes for full mixed-methods pipeline

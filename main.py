@@ -88,7 +88,7 @@ def main():
     print("\nSTEP 6: Creating visualizations...")
     print("-" * 70)
     visualizer = DrugCheckingVisualizer(quant_analyzer)
-    visualizer.create_all_visualizations()
+    visualizer.create_all_visualizations(qual_analyzer=qual_analyzer)
     print()
     
     # Summary
@@ -114,6 +114,7 @@ def main():
     print("    - outputs/substance_distribution.png")
     print("    - outputs/nps_diversity.png")
     print("    - outputs/early_warning.png")
+    print("    - outputs/mixed_methods_summary.png")
     print("\n" + "=" * 70)
     print("\nKEY FINDINGS (MIXED-METHODS SYNTHESIS):")
     print("✓ QUANTITATIVE: Fixed-site services detect significantly higher drug diversity")
